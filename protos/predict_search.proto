@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+
+// 
+message YeSi {
+    float chang = 1;
+    float zhong = 2;
+    float duan = 3;
+    float sui = 4;
+}
+
+// 
+message YePian {
+    float da = 1;
+    float xiao = 2;
+    float sui = 3;
+}
+
+//// 正向预测请求参数
+message PredictRequest{
+    float B_yepian_da = 1; 
+    float B_yepian_xiao = 2; 
+    float B_yepian_sui = 3; 
+    float H_yepian_da = 4; 
+    float H_yepian_xiao = 5; 
+    float H_yepian_sui = 6; 
+    float tianchongzhi = 7; 
+    float hanshuilv = 8;
+    float phanshuilv = 9; 
+    string redun_id = 10;     // 冗余输入头，标记
+
+}
+
+//// 反向搜索请求参数
+message SearchRequest{
+    float xizu = 1; 
+    float tianchongzhi = 2; 
+    float hanshuilv = 3; 
+    float phanshuilv = 4;  
+    string type_search = 5;
+    float B_yepian_da = 6;
+    float B_yepian_xiao = 7; 
+    float B_yepian_sui = 8; 
+    float H_yepian_da = 9; 
+    float H_yepian_xiao = 10; 
+    float H_yepian_sui = 11; 
+    string redun_id = 12;     // 冗余输入头，标记
+}
+
+//// 定义预测返回参数
+message PredictResponse{
+    string redun_id = 1;
+    bool is_error = 2;
+    string error_message = 3;
+    YeSi B_qiesihou = 4;
+    YeSi H_qiesihou = 5; 
+    YeSi B_fengxuanhou = 6;
+    YeSi H_lengquehou = 7;
+    YeSi chanpeihou = 8;
+    float xizu = 9;
+        
+}
+
+//// 定义搜索返回参数
+message SearchResponse{
+    string redun_id = 1;
+    bool is_error = 2;
+    string error_message = 3;
+    float tianchongzhi = 4;
+    float hanshuilv = 5;
+    float phanshuilv = 6;
+    YePian B_module = 7;
+    YePian H_module = 8;
+    float close_xizu = 9;
+}
+
+//// 定义服务接口
+service Predictor{
+    rpc predict(PredictRequest) returns (PredictResponse){}
+    rpc search(SearchRequest) returns (SearchResponse){}
+}
